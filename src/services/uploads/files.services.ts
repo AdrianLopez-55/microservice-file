@@ -4,22 +4,26 @@ import { v4 as uuidv4 } from 'uuid';
 
 @Injectable()
 export class FilesService {
-  saveFile(fileBuffer: Buffer,) {
+  saveFile(filename: string, fileBuffer: Buffer) {
     const directory = 'uploads'; // Ruta de la carpeta de destino
 
     // Verificar si el directorio existe, si no, crearlo
     if (!existsSync(directory)) {
       mkdirSync(directory);
     }
+    
+    // Obtener la extensión del archivo original
+    const fileExtension = filename.split('.').pop();
+
 
     // Generar un nombre de archivo único utilizando UUID
-    const filename = `${uuidv4()}.jpg`;
+    const uniqueFilename = `${uuidv4()}.${fileExtension}`;
 
     // Resto del código para guardar el archivo en el directorio
-    const filePath = `${directory}/${filename}`;
+    const filePath = `${directory}/${uniqueFilename}`;
     writeFileSync(filePath, fileBuffer);
 
-    console.log(`Archivo "${filename}" guardado correctamente en "${filePath}"`);
+    console.log(`Archivo "${uniqueFilename}" guardado correctamente en "${filePath}"`);
 
     // Puedes realizar otras operaciones o retornar alguna respuesta aquí si es necesario
   }
