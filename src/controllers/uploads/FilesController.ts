@@ -7,7 +7,7 @@ export class FilesController {
   constructor(private readonly filesService: FilesService) {}
 
   @Post('upload')
-  uploadFile(@Body() body: { file: string }) {
+  async uploadFile(@Body() body: { file: string }) {
     const base64Data = body.file;
 
     // Obtener el tipo de contenido y los datos del archivo desde la cadena Base64
@@ -24,8 +24,8 @@ export class FilesController {
     const filename = `${uuidv4()}.${contentType.split('/')[1]}`;
 
     // Llamar al método del servicio para guardar el archivo
-    this.filesService.saveFile(filename, fileBuffer);
+    const savedFile = await this.filesService.saveFile(filename, fileBuffer);
 
-    return { message: 'Archivo guardado correctamente' };
+    return { message: 'Archivo guardado correctamente', savedFile };
   }
 }

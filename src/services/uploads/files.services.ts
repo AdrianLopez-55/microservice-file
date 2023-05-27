@@ -1,10 +1,18 @@
 import { Injectable } from '@nestjs/common';
 import { writeFileSync, existsSync, mkdirSync } from 'fs';
 import { v4 as uuidv4 } from 'uuid';
+import { Model } from 'mongoose';
+import { InjectModel } from '@nestjs/mongoose';
+import { File,FileDocument } from 'src/schemas/files.schema';
+
 
 @Injectable()
 export class FilesService {
-  saveFile(filename: string, fileBuffer: Buffer) {
+  constructor(
+    @InjectModel(File.name) private fileModel: Model<FileDocument>,
+  ) {}
+
+  async saveFile(filename: string,  fileBuffer: Buffer) {
     const directory = 'uploads'; // Ruta de la carpeta de destino
 
     // Verificar si el directorio existe, si no, crearlo
@@ -26,5 +34,18 @@ export class FilesService {
     console.log(`Archivo "${uniqueFilename}" guardado correctamente en "${filePath}"`);
 
     // Puedes realizar otras operaciones o retornar alguna respuesta aquí si es necesario
+      // Guardar los datos del archivo en la base de datos
+      const file = new this.fileModel({
+        filename,
+        originalname:uniqueFilename,
+        extension: fileExtension,
+        size: fileBuffer.length,
+        filePath,
+      });
+  
+      await file.save();
+  
+      console.log('Datos del archivo guardados en la base de datos:', file);
+  
   }
 }
