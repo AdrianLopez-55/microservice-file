@@ -7,6 +7,9 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { FileSchema } from './schemas/files.schema';
 import { FileHandlerController } from './controllers/handler/file-handler.controller';
 import { FilehandlerService } from './services/file-handler/file-handler.service';
+import { FileDataSchema } from './models/filedata.model';
+import { FileDataController } from './controllers/filedata/filedata.controller';
+import { FileDataService } from './services/filedata/filedata.service';
 
 @Module({
   imports: [
@@ -15,9 +18,10 @@ import { FilehandlerService } from './services/file-handler/file-handler.service
       useUnifiedTopology: true,
     }),
     MongooseModule.forFeature([{ name: 'File', schema: FileSchema }]),
+    MongooseModule.forFeature([{ name: 'FileData', schema: FileDataSchema }]),
  
   ],
-  controllers: [AppController,FilesController,FileHandlerController],
-  providers: [AppService,FilesService,FilehandlerService],
+  controllers: [AppController,FilesController,FileHandlerController,FileDataController],
+  providers: [AppService,FilesService,FilehandlerService,FileDataService],
 })
 export class AppModule {}
