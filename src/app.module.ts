@@ -12,6 +12,8 @@ import { FileDataController } from './controllers/filedata/filedata.controller';
 import { FileDataService } from './services/filedata/filedata.service';
 import { FileRequest } from './services/file-request/file-request.service';
 import { FilesReqController } from './controllers/file-request/file-request.controller';
+import { FileUpdateService } from './services/file-update/file-update.service';
+import { FileUpdateController } from './controllers/file-update/file-update.controller';
 
 @Module({
   imports: [
@@ -23,7 +25,8 @@ import { FilesReqController } from './controllers/file-request/file-request.cont
     MongooseModule.forFeature([{ name: 'FileData', schema: FileDataSchema }]),
  
   ],
-  controllers: [AppController,FilesController,FileHandlerController,FileDataController,FilesReqController],
-  providers: [AppService,FilesService,FilehandlerService,FileDataService,FileRequest]
+  controllers: [AppController,FilesController,FileHandlerController,
+    FileDataController,FilesReqController,FileUpdateController],
+  providers: [AppService,FilesService,FilehandlerService,FileDataService,FileRequest,FileUpdateService]
 })
 export class AppModule {}
