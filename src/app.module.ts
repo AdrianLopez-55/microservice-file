@@ -11,7 +11,7 @@ import { FileDataSchema } from './models/filedata.model';
 import { FileDataController } from './controllers/filedata/filedata.controller';
 import { FileDataService } from './services/filedata/filedata.service';
 import { FileRequest } from './services/file-request/file-request.service';
-import { FileReqController } from './controllers/file-request/file-request.controller';
+import { FilesReqController } from './controllers/file-request/file-request.controller';
 
 @Module({
   imports: [
@@ -23,7 +23,7 @@ import { FileReqController } from './controllers/file-request/file-request.contr
     MongooseModule.forFeature([{ name: 'FileData', schema: FileDataSchema }]),
  
   ],
-  controllers: [AppController,FilesController,FileHandlerController,FileDataController,FileReqController],
+  controllers: [AppController,FilesController,FileHandlerController,FileDataController,FilesReqController],
   providers: [AppService,FilesService,FilehandlerService,FileDataService,FileRequest]
 })
 export class AppModule {}

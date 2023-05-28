@@ -15,12 +15,15 @@ export class FileRequest {
     return this.fileModel.findById(id).exec();
   }
 
-  getFileBase64(filePath: string, extension: string): string {
+  getFileData(filePath: string, extension: string): { mime: string, data: string } {
     try {
       const fileData = readFileSync(filePath, { encoding: 'base64' });
       const mimeType = mimeTypes.lookup(extension) || 'application/octet-stream';
-      const base64Data = `data:${mimeType};base64,${fileData}`;
-      return base64Data;
+      const file = {
+        mime: `@file/${extension}`,
+        data: `data:${mimeType};base64,${fileData}`
+      };
+      return file;
     } catch (error) {
       throw new Error(`Error al leer el archivo: ${error.message}`);
     }
