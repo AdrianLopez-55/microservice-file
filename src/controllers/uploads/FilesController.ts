@@ -13,8 +13,11 @@ export class FilesController {
     // Generar un nombre de archivo único utilizando UUID y mantener la extensión original
     const filename = `${uuidv4()}.${fileData.mime.split('/')[1]}`;
 
+    // Obtener la extensión del archivo
+    const fileExtension = filename.split('.').pop();
+
     // Llamar al método del servicio para guardar el archivo
-    await this.filesService.saveFile(filename, fileData);
+    await this.filesService.saveFile(filename, fileExtension, fileData.data);
 
     return { message: 'Archivo guardado correctamente' };
   }

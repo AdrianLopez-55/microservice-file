@@ -1,5 +1,11 @@
-import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { Schema, Prop, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
+
+export enum FileCategory {
+  Image = 'image',
+  Document = 'document',
+  Other = 'other',
+}
 
 @Schema()
 export class File {
@@ -17,6 +23,9 @@ export class File {
 
   @Prop({ required: true })
   filePath: string;
+
+  @Prop({ required: true, enum: FileCategory }) // Asegúrate de tener el enum FileCategory
+  category: FileCategory;
 
   @Prop({ default: Date.now })
   createdAt: Date;
