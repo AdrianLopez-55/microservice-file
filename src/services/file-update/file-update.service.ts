@@ -3,7 +3,7 @@ import { writeFileSync, existsSync, mkdirSync } from 'fs';
 import { v4 as uuidv4 } from 'uuid';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
-import { File, FileDocument } from 'src/schemas/files.schema';
+import { File, FileDocument, FileCategory } from 'src/schemas/files.schema';
 
 @Injectable()
 export class FileUpdateService {
@@ -35,6 +35,25 @@ export class FileUpdateService {
     // Guardar el archivo actualizado en el sistema de archivos
     writeFileSync(newFilePath, fileBuffer);
 
+    // Obtener el archivo existente de la base de datos
+    const existingFile = await this.fileModel.findById(fileId);
+
+    if (!existingFile) {
+      throw new Error('El archivo no existe en la base de datos');
+    }
+
+    // Determinar la categoría del nuevo archivo utilizando la extensión
+    const newFileCategory = this.determineFileCategory(fileExtension);
+    
+    //
+    console.log('Categoría del archivo nuevo:', newFileCategory);
+    console.log('Categoría del archivo existente:', existingFile.category);
+    console.log("Extension:", fileExtension)
+
+    if (existingFile.category !== newFileCategory) {
+      throw new Error('No se permite actualizar el archivo con una categoría diferente');
+    }
+
     // Actualizar los campos en la base de datos
     const updatedFile = await this.fileModel.findByIdAndUpdate(
       fileId,
@@ -43,5 +62,16 @@ export class FileUpdateService {
     );
 
     return updatedFile;
+  }
+
+  private determineFileCategory(extension: string): FileCategory {
+    
+    if (['jpg', 'jpeg', 'png', 'gif', 'bmp'].includes(extension.toLowerCase())) {
+      return FileCategory.Image;
+    } else if (['doc', 'docx', 'pdf', 'txt'].includes(extension.toLowerCase())) {
+      return FileCategory.Document;
+    } else {
+      return FileCategory.Other;
+    }
   }
 }
