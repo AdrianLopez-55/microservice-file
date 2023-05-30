@@ -1,6 +1,6 @@
 import { Controller, Delete, Param, HttpException, HttpStatus } from '@nestjs/common';
 import { FileDeleteService } from 'src/services/file-delete/file-delete.service';
-@Controller('files')
+@Controller('file')
 export class FileDeleteController {
   constructor(private readonly filesService: FileDeleteService) {}
 

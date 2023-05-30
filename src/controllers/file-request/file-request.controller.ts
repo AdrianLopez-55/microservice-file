@@ -1,7 +1,7 @@
 import { Controller, Get, Param } from '@nestjs/common';
 import { FileRequest } from 'src/services/file-request/file-request.service';
 
-@Controller('file-req')
+@Controller('file')
 export class FilesReqController {
   constructor(private readonly fileRequest: FileRequest) {}
 

@@ -1,7 +1,7 @@
 import { Controller, Post, Body, Param, HttpException, HttpStatus } from '@nestjs/common';
 import { FileUpdateService } from 'src/services/file-update/file-update.service';
 
-@Controller('files')
+@Controller('file')
 export class FileUpdateController {
   constructor(private readonly fileUpdateService: FileUpdateService) {}
 
