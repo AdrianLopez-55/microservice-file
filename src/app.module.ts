@@ -11,15 +11,17 @@ import { FileUpdateService } from './services/file-update/file-update.service';
 import { FileUpdateController } from './controllers/file-update/file-update.controller';
 import { FileDeleteController } from './controllers/file-delete/file-delete.controller';
 import { FileDeleteService } from './services/file-delete/file-delete.service';
-
+import { ConfigModule } from '@nestjs/config';
+import './dotenv.config';
 @Module({
   imports: [
-    MongooseModule.forRoot('mongodb+srv://EricRojo:practicalaboral@cluster0.78zh6ct.mongodb.net/PracticaLaboral', {
+    MongooseModule.forRoot(process.env.MONGODB_ATLAS, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     }),
     MongooseModule.forFeature([{ name: 'File', schema: FileSchema }]),
     MongooseModule.forFeature([{ name: 'FileData', schema: FileDataSchema }]),
+    ConfigModule.forRoot()
  
   ],
   controllers: [FilesController,FilesReqController,FileUpdateController,FileDeleteController],
