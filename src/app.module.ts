@@ -14,6 +14,8 @@ import { FileRequest } from './services/file-request/file-request.service';
 import { FilesReqController } from './controllers/file-request/file-request.controller';
 import { FileUpdateService } from './services/file-update/file-update.service';
 import { FileUpdateController } from './controllers/file-update/file-update.controller';
+import { FileDeleteController } from './controllers/file-delete/file-delete.controller';
+import { FileDeleteService } from './services/file-delete/file-delete.service';
 
 @Module({
   imports: [
@@ -26,7 +28,8 @@ import { FileUpdateController } from './controllers/file-update/file-update.cont
  
   ],
   controllers: [AppController,FilesController,FileHandlerController,
-    FileDataController,FilesReqController,FileUpdateController],
-  providers: [AppService,FilesService,FilehandlerService,FileDataService,FileRequest,FileUpdateService]
+    FileDataController,FilesReqController,FileUpdateController,FileDeleteController],
+  providers: [AppService,FilesService,FilehandlerService,FileDataService,
+    FileRequest,FileUpdateService,FileDeleteService]
 })
 export class AppModule {}
