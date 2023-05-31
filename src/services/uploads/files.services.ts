@@ -12,11 +12,16 @@ export class FilesService {
   ) {}
 
   async saveFile(filename: string, fileExtension: string, fileData: string) {
-    const directory = 'uploads'; // Ruta de la carpeta de destino
+    const now = new Date();
+    const year = now.getFullYear().toString();
+    const month = now.toLocaleString('default', { month: 'long' });
+    const day = now.getDate().toString();
+    const dayOfWeek = now.toLocaleString('default', { weekday: 'long' });
+    const directory = `uploads/${year}/${month}/${day}_${dayOfWeek}`; // Ruta de la carpeta de destino
 
     // Verificar si el directorio existe, si no, crearlo
     if (!existsSync(directory)) {
-      mkdirSync(directory);
+      mkdirSync(directory, { recursive: true });
     }
 
     // Generar un nombre de archivo único utilizando UUID

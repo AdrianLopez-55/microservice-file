@@ -22,11 +22,16 @@ export class FileUpdateService {
     // Generar un nombre de archivo único utilizando UUID y mantener la extensión original
     const filename = `${uuidv4()}.${fileExtension}`;
 
-    const directory = 'uploads'; // Ruta de la carpeta de destino
+    const now = new Date();
+    const year = now.getFullYear().toString();
+    const month = now.toLocaleString('default', { month: 'long' });
+    const day = now.getDate().toString();
+    const dayOfWeek = now.toLocaleString('default', { weekday: 'long' });
+    const directory = `uploads/${year}/${month}/${day}_${dayOfWeek}`; // Ruta de la carpeta de destino
 
     // Verificar si el directorio existe, si no, crearlo
     if (!existsSync(directory)) {
-      mkdirSync(directory);
+      mkdirSync(directory, { recursive: true });
     }
 
     // Ruta del archivo actualizado
@@ -44,11 +49,6 @@ export class FileUpdateService {
 
     // Determinar la categoría del nuevo archivo utilizando la extensión
     const newFileCategory = this.determineFileCategory(fileExtension);
-    
-    //
-    console.log('Categoría del archivo nuevo:', newFileCategory);
-    console.log('Categoría del archivo existente:', existingFile.category);
-    console.log("Extension:", fileExtension)
 
     if (existingFile.category !== newFileCategory) {
       throw new Error('No se permite actualizar el archivo con una categoría diferente');
@@ -65,7 +65,6 @@ export class FileUpdateService {
   }
 
   private determineFileCategory(extension: string): FileCategory {
-    
     if (['jpg', 'jpeg', 'png', 'gif', 'bmp'].includes(extension.toLowerCase())) {
       return FileCategory.Image;
     } else if (['doc', 'docx', 'pdf', 'txt'].includes(extension.toLowerCase())) {
