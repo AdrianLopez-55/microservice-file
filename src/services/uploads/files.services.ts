@@ -26,8 +26,6 @@ export class FilesService {
     const filePath = `${directory}/${uniqueFilename}`;
     writeFileSync(filePath, fileData, { encoding: 'base64' });
 
-    console.log(`Archivo "${uniqueFilename}" guardado correctamente en "${filePath}"`);
-
     // Determinar la categoría según la extensión del archivo
     let category: FileCategory;
 
@@ -46,11 +44,12 @@ export class FilesService {
       extension: fileExtension.toLowerCase(),
       size: fileData.length,
       filePath,
-      category
+      category,
+      status: 'active',
     });
 
     await file.save();
 
-    console.log('Datos del archivo guardados en la base de datos:', file);
+    return file;
   }
 }

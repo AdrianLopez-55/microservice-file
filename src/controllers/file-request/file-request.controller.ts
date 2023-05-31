@@ -1,4 +1,4 @@
-import { Controller, Get, Param } from '@nestjs/common';
+import { Controller, Get, Param, NotFoundException } from '@nestjs/common';
 import { FileRequest } from 'src/services/file-request/file-request.service';
 
 @Controller('file')
@@ -7,14 +7,15 @@ export class FilesReqController {
 
   @Get(':id')
   async getFileById(@Param('id') id: string) {
-    const file = await this.fileRequest.getFileById(id);
-    if (!file) {
-      throw new Error('Archivo no encontrado');
+    try {
+      const file = await this.fileRequest.getFileById(id);
+
+      const { filePath, extension } = file;
+      const fileData = this.fileRequest.getFileData(filePath, extension);
+
+      return { file: fileData };
+    } catch (error) {
+      throw new NotFoundException(error.message);
     }
-
-    const { filePath, extension } = file;
-    const fileData = this.fileRequest.getFileData(filePath, extension);
-
-    return { file: fileData };
   }
 }

@@ -24,6 +24,9 @@ export class File {
   @Prop({ required: true })
   filePath: string;
 
+  @Prop({ default: 'active' }) // Establece 'active' como valor por defecto
+  status: string;
+
   @Prop({ required: true, enum: FileCategory }) // Asegúrate de tener el enum FileCategory
   category: FileCategory;
 

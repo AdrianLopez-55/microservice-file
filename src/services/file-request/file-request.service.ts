@@ -12,16 +12,23 @@ export class FileRequest {
   ) {}
 
   async getFileById(id: string): Promise<File> {
-    return this.fileModel.findById(id).exec();
+    const file = await this.fileModel.findById(id).exec();
+    if (!file) {
+      throw new Error('Archivo no encontrado');
+    }
+    if (file.status !== 'active') {
+      throw new Error('Archivo eliminado');
+    }
+    return file;
   }
 
-  getFileData(filePath: string, extension: string): { mime: string, data: string } {
+  getFileData(filePath: string, extension: string): { mime: string; data: string } {
     try {
       const fileData = readFileSync(filePath, { encoding: 'base64' });
       const mimeType = mimeTypes.lookup(extension) || 'application/octet-stream';
       const file = {
         mime: `@file/${extension}`,
-        data: `data:${mimeType};base64,${fileData}`
+        data: `data:${mimeType};base64,${fileData}`,
       };
       return file;
     } catch (error) {

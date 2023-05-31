@@ -17,8 +17,8 @@ export class FilesController {
     const fileExtension = filename.split('.').pop();
 
     // Llamar al método del servicio para guardar el archivo
-    await this.filesService.saveFile(filename, fileExtension, fileData.data);
+    const savedFile = await this.filesService.saveFile(filename, fileExtension, fileData.data);
 
-    return { message: 'Archivo guardado correctamente' };
+    return { message: 'Archivo guardado correctamente', file: savedFile };
   }
 }

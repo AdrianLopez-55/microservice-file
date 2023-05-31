@@ -11,10 +11,17 @@ export class FileDeleteService {
 
   async deleteFile(fileId: string) {
     try {
-      const deletedFile = await this.fileModel.findByIdAndDelete(fileId);
-      if (!deletedFile) {
+      const updatedFile = await this.fileModel.findByIdAndUpdate(
+        fileId,
+        { status: 'inactive' },
+        { new: true },
+      );
+
+      if (!updatedFile) {
         throw new Error('No se encontró el archivo');
       }
+
+      return 'Archivo eliminado correctamente';
     } catch (error) {
       throw new Error('Error al eliminar el archivo');
     }
