@@ -1,9 +1,9 @@
 import { Controller, Post, Body, Param, HttpException, HttpStatus } from '@nestjs/common';
-import { FileUpdateService } from 'src/services/file-update/file-update.service';
+import { FileUpdateNoCatService } from 'src/services/update-no-category/update-no-category.service';
 
-@Controller('file-category')
-export class FileUpdateController {
-  constructor(private readonly fileUpdateService: FileUpdateService) {}
+@Controller('file')
+export class FileUpdateNoCatController {
+  constructor(private readonly fileUpdateService: FileUpdateNoCatService) {}
 
   @Post('update/:id')
   async updateFile(@Param('id') fileId: string, @Body() body: { file: { mime: string, base64: string } }) {

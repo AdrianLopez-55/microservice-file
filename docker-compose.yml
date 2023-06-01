@@ -1,0 +1,11 @@
+version: '3'
+
+services:
+  my-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3200:3200" # Change the second port number to the desired container port
+    env_file:
+      - .env

@@ -30,7 +30,7 @@ export class FilesService {
     // Resto del código para guardar el archivo en el directorio
     const filePath = `${directory}/${uniqueFilename}`;
     writeFileSync(filePath, fileData, { encoding: 'base64' });
-
+ 
     // Determinar la categoría según la extensión del archivo
     let category: FileCategory;
 

@@ -13,6 +13,8 @@ import { FileDeleteController } from './controllers/file-delete/file-delete.cont
 import { FileDeleteService } from './services/file-delete/file-delete.service';
 import { ConfigModule } from '@nestjs/config';
 import './dotenv.config';
+import { FileUpdateNoCatController } from './controllers/update-no-category/update-no-category.controller';
+import { FileUpdateNoCatService } from './services/update-no-category/update-no-category.service';
 @Module({
   imports: [
     MongooseModule.forRoot(process.env.MONGODB_ATLAS, {
@@ -24,7 +26,7 @@ import './dotenv.config';
     ConfigModule.forRoot()
  
   ],
-  controllers: [FilesController,FilesReqController,FileUpdateController,FileDeleteController],
-  providers: [AppService,FilesService,FileRequest,FileUpdateService,FileDeleteService]
+  controllers: [FilesController,FilesReqController,FileUpdateController,FileDeleteController,FileUpdateNoCatController],
+  providers: [AppService,FilesService,FileRequest,FileUpdateService,FileDeleteService,FileUpdateNoCatService]
 })
 export class AppModule {}
