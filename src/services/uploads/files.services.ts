@@ -17,7 +17,7 @@ export class FilesService {
     const month = now.toLocaleString('default', { month: 'long' });
     const day = now.getDate().toString();
     const dayOfWeek = now.toLocaleString('default', { weekday: 'long' });
-    const directory = `uploads/${year}/${month}/${day}_${dayOfWeek}`; // Ruta de la carpeta de destino
+    const directory = `/home/dby823/FilesBackend/${year}/${month}/${day}_${dayOfWeek}`; // Ruta de la carpeta de destino
 
     // Verificar si el directorio existe, si no, crearlo
     if (!existsSync(directory)) {
