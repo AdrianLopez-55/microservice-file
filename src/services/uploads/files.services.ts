@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { writeFileSync, existsSync, mkdirSync } from 'fs';
 import { v4 as uuidv4 } from 'uuid';
 import { Model } from 'mongoose';
@@ -7,12 +7,14 @@ import { File, FileDocument, FileCategory } from 'src/schemas/files.schema';
 
 @Injectable()
 export class FilesService {
+  private readonly logger = new Logger(FilesService.name);
   constructor(
     @InjectModel(File.name) private fileModel: Model<FileDocument>,
   ) {}
 
   async saveFile(filename: string, fileExtension: string, fileData: string) {
-    const now = new Date();
+    try{
+      const now = new Date();
     const year = now.getFullYear().toString();
     const month = now.toLocaleString('default', { month: 'long' });
     const day = now.getDate().toString();
@@ -56,5 +58,10 @@ export class FilesService {
     await file.save();
 
     return file
+    }
+    catch (error) {
+      this.logger.error(`Error al guardar el archivo: ${error.message}`);
+      throw new Error('No se pudo guardar el archivo');
+    }
   }
 }
