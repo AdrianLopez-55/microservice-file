@@ -55,6 +55,6 @@ export class FilesService {
 
     await file.save();
 
-    return file;
+    return file
   }
 }

@@ -9,11 +9,10 @@ export class FilesReqController {
   async getFileById(@Param('id') id: string) {
     try {
       const file = await this.fileRequest.getFileById(id);
-
-      const { filePath, extension } = file;
-      const fileData = this.fileRequest.getFileData(filePath, extension);
-
-      return { file: fileData };
+      if ('message' in file) {
+        return { message: file.message };
+      }
+      return { file };
     } catch (error) {
       throw new NotFoundException(error.message);
     }
