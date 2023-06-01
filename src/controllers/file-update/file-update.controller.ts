@@ -6,7 +6,7 @@ export class FileUpdateController {
   constructor(private readonly fileUpdateService: FileUpdateService) {}
 
   @Post('update/:id')
-  async updateFile(@Param('id') fileId: string, @Body() body: { file: { mime: string, data: string } }) {
+  async updateFile(@Param('id') fileId: string, @Body() body: { file: { mime: string, base64: string } }) {
     const fileData = body.file;
 
     try {

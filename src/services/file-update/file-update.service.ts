@@ -11,10 +11,10 @@ export class FileUpdateService {
     @InjectModel(File.name) private fileModel: Model<FileDocument>,
   ) {}
 
-  async updateFile(fileId: string, fileData: { mime: string, data: string }): Promise<File> {
+  async updateFile(fileId: string, fileData: { mime: string, base64: string }): Promise<File> {
     // Obtener el tipo de contenido y los datos del archivo desde el objeto fileData
     const contentType = fileData.mime;
-    const fileBuffer = Buffer.from(fileData.data, 'base64');
+    const fileBuffer = Buffer.from(fileData.base64, 'base64');
 
     // Obtener la extensión del archivo original
     const fileExtension = contentType.split('/')[1];

@@ -7,7 +7,7 @@ export class FilesController {
   constructor(private readonly filesService: FilesService) {}
 
   @Post('upload')
-  async uploadFile(@Body() body: { file: { mime: string, data: string } }) {
+  async uploadFile(@Body() body: { file: { mime: string, base64: string } }) {
     const fileData = body.file;
 
     // Generar un nombre de archivo único utilizando UUID y mantener la extensión original
@@ -17,7 +17,7 @@ export class FilesController {
     const fileExtension = filename.split('.').pop();
 
     // Llamar al método del servicio para guardar el archivo
-    const savedFile = await this.filesService.saveFile(filename, fileExtension, fileData.data);
+    const savedFile = await this.filesService.saveFile(filename, fileExtension, fileData.base64);
 
     return { message: 'Archivo guardado correctamente', file: savedFile };
   }

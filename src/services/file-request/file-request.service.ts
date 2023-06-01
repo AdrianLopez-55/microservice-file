@@ -11,28 +11,20 @@ export class FileRequest {
     @InjectModel(File.name) private readonly fileModel: Model<FileDocument>,
   ) {}
 
-  async getFileById(id: string): Promise<File> {
+  async getFileById(id: string): Promise<{ mime: string; base64: string } | { message: string }> {
     const file = await this.fileModel.findById(id).exec();
     if (!file) {
       throw new Error('Archivo no encontrado');
     }
     if (file.status !== 'active') {
-      throw new Error('Archivo eliminado');
+      return { message: 'El archivo ha sido eliminado' };
     }
-    return file;
-  }
-
-  getFileData(filePath: string, extension: string): { mime: string; data: string } {
-    try {
-      const fileData = readFileSync(filePath, { encoding: 'base64' });
-      const mimeType = mimeTypes.lookup(extension) || 'application/octet-stream';
-      const file = {
-        mime: `@file/${extension}`,
-        data: `data:${mimeType};base64,${fileData}`,
-      };
-      return file;
-    } catch (error) {
-      throw new Error(`Error al leer el archivo: ${error.message}`);
-    }
+    const fileData = readFileSync(file.filePath, { encoding: 'base64' });
+    const mimeType = mimeTypes.lookup(file.extension) || 'application/octet-stream';
+    const fileObject = {
+      mime: `@file/${file.extension}`,
+      base64: fileData,
+    };
+    return fileObject;
   }
 }
