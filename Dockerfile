@@ -12,7 +12,8 @@ RUN npm install
 
 # Copy the entire project directory to the container
 COPY . .
-
+#Volume
+VOLUME /home/dby823/FilesBackend
 # Set the environment variable for the application port
 ENV PORT_APPLICATION=3200
 
