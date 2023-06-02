@@ -20,7 +20,7 @@ export class FilesService {
       const month = now.toLocaleString('default', { month: 'long' });
       const day = now.getDate().toString();
       const dayOfWeek = now.toLocaleString('default', { weekday: 'long' });
-      const directory = `uploads/${year}/${month}/${day}_${dayOfWeek}`;
+      const directory = `/home/dby823/FilesBackend/${year}/${month}/${day}_${dayOfWeek}`;
 
       // Verificar si el directorio existe, si no, crearlo
       if (!existsSync(directory)) {
