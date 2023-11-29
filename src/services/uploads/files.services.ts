@@ -9,9 +9,7 @@ import { File, FileDocument, FileCategory } from 'src/schemas/files.schema';
 export class FilesService {
   private readonly logger = new Logger(FilesService.name);
 
-  constructor(
-    @InjectModel(File.name) private fileModel: Model<FileDocument>,
-  ) {}
+  constructor(@InjectModel(File.name) private fileModel: Model<FileDocument>) {}
 
   async saveFile(filename: string, fileExtension: string, fileData: string) {
     try {
@@ -33,9 +31,73 @@ export class FilesService {
 
       let category: FileCategory;
 
-      if (['jpg', 'jpeg', 'png', 'gif', 'bmp'].includes(fileExtension.toLowerCase())) {
+      if (
+        ['jpg', 'jpeg', 'png', 'gif', 'bmp'].includes(
+          fileExtension.toLowerCase(),
+        )
+      ) {
         category = FileCategory.Image;
-      } else if (['doc', 'docx', 'pdf', 'txt'].includes(fileExtension.toLowerCase())) {
+      } else if (
+        ['doc', 'docx', 'pdf', 'txt'].includes(fileExtension.toLowerCase())
+      ) {
+        category = FileCategory.Document;
+      } else {
+        category = FileCategory.Other;
+      }
+
+      const file = new this.fileModel({
+        filename,
+        originalname: uniqueFilename,
+        extension: fileExtension.toLowerCase(),
+        size: fileData.length,
+        filePath,
+        category,
+        status: 'active',
+      });
+
+      await file.save();
+
+      this.logger.log(`Archivo guardado correctamente en ${filePath}`);
+      return file;
+    } catch (error) {
+      this.logger.error(`Error al guardar el archivo: ${error.message}`);
+      throw new Error('No se pudo guardar el archivo');
+    }
+  }
+
+  async saveFileTemplate(
+    filename: string,
+    fileExtension: string,
+    fileData: string,
+  ) {
+    try {
+      const now = new Date();
+      const year = now.getFullYear().toString();
+      const month = now.toLocaleString('default', { month: 'long' });
+      const day = now.getDate().toString();
+      const dayOfWeek = now.toLocaleString('default', { weekday: 'long' });
+      const directory = `/home_templates/dby823/FilesBackend/${year}/${month}/${day}_${dayOfWeek}`;
+
+      // Verificar si el directorio existe, si no, crearlo
+      if (!existsSync(directory)) {
+        mkdirSync(directory, { recursive: true });
+      }
+
+      const uniqueFilename = `${filename}.${fileExtension}`;
+      const filePath = `${directory}/${uniqueFilename}`;
+      writeFileSync(filePath, fileData, { encoding: 'base64' });
+
+      let category: FileCategory;
+
+      if (
+        ['jpg', 'jpeg', 'png', 'gif', 'bmp'].includes(
+          fileExtension.toLowerCase(),
+        )
+      ) {
+        category = FileCategory.Image;
+      } else if (
+        ['doc', 'docx', 'pdf', 'txt'].includes(fileExtension.toLowerCase())
+      ) {
         category = FileCategory.Document;
       } else {
         category = FileCategory.Other;

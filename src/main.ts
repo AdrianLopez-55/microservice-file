@@ -6,7 +6,7 @@ import './dotenv.config';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule, { cors: true });
 
   const config = new DocumentBuilder()
     .setTitle('Files Uploader')
@@ -20,6 +20,6 @@ async function bootstrap() {
   app.use(bodyParser.json({ limit: '5mb' }));
   app.useGlobalFilters(new AllExceptionsFilter());
   await app.listen(process.env.PORT_APPLICATION);
-  console.log(process.env.PORT_APPLICATION)
+  console.log(process.env.PORT_APPLICATION);
 }
 bootstrap();
